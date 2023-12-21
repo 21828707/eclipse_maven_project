@@ -1,0 +1,210 @@
+applicationContext.xml
+=>
+	<!-- 1번 방식 : 빈 생성자를 이용하는 방식 [IoC] -->
+	<bean id="helloBean" class="com.baek.d1.HelloBeanBoy"></bean>
+App.java
+=>
+	ApplicationContext factory = new ClassPathXmlApplicationContext("applicationContext.xml");
+    HelloBean helloBean1 = factory.getBean("helloBean", HelloBean.class);
+    HelloBean helloBean2 = factory.getBean("helloBean", HelloBean.class);
+    -> 빈 객체는 기본적으로 싱글톤이다. 즉, 두개의 객체 변수는 같은 객체를 가리킨다.
+-----------------------------------------------------------------------------
+applicationContext.xml
+=>
+	<!-- 2번 방식 : 생성자를 이용하는 방식, 인자 하나를 주입 -->
+	<bean id="helloBean" class="com.baek.d1.HelloBeanBoy">
+		<constructor-arg>
+			<!--construct-arg를 인자로 받음 => 인자를 하나받는 생성자 호출 없으면 에러.-->
+			<value>이백승</value>
+		</constructor-arg>
+	</bean>
+App.java
+=>
+	ApplicationContext factory = new ClassPathXmlApplicationContext("applicationContext.xml");
+    HelloBean helloBean1 = factory.getBean("helloBean", HelloBean.class);
+    HelloBean helloBean2 = factory.getBean("helloBean", HelloBean.class);
+    -> 파라미터가 1개인 생성자를 찾아 <value>값을 대입하여 객체를 생성할 수 있다.
+    -> 자바 코드 상의 변화는 없다. => 결합도가 낮다.
+--------------------------------------------------------------------------------
+applicationContext.xml
+=>
+	<!--3번 방식 : 생성자를 이용하는 방식, 인자 두개 주입, 기본타입과 빈객체 타입-->
+	<bean id="boy" class="com.baek.d1.Boy"></bean>
+	<bean id="helloBean" class="com.baek.d1.HelloBeanBoy">
+		<!-- 인자의 순서는 맞춰줘야 한다.--><!--인자를 2개받는 생성자가 없으면 오류 발생-->
+		<constructor-arg>
+			<value>hello</value>
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="boy"/> <!-- 빈 객체를 입력할 수 있다. -->
+		</constructor-arg>
+	</bean>
+App.java
+=>
+	ApplicationContext factory = new ClassPathXmlApplicationContext("applicationContext.xml");
+    HelloBean helloBean1 = factory.getBean("helloBean", HelloBean.class);
+    HelloBean helloBean2 = factory.getBean("helloBean", HelloBean.class);
+    -> 자바 코드 상의 변화는 없다. => 결합도가 낮다.
+----------------------------------------------------------------------------------
+applicationContext.xml
+=>
+	<!--4번 방식 : 인덱스 속성을 사용하면 주입하는 인자의 순서를 변경할 수 있다.-->
+	<bean id="boy" class="com.baek.d1.Boy"></bean>
+	<bean id="helloBean" class="com.baek.d1.HelloBeanBoy">
+		<!--인덱스를 주지 않으면 위에서부터 첫번째 인자로 들어간다.-->
+		<constructor-arg index="1">
+			<ref bean="boy"/>
+		</constructor-arg>
+		<constructor-arg index="0">
+			<value>hello</value>
+		</constructor-arg>
+	</bean>
+App.java
+=>
+	ApplicationContext factory = new ClassPathXmlApplicationContext("applicationContext.xml");
+    HelloBean helloBean1 = factory.getBean("helloBean", HelloBean.class);
+    HelloBean helloBean2 = factory.getBean("helloBean", HelloBean.class);
+    -> 자바 코드 상의 변화는 없다. => 결합도가 낮다.
+--------------------------------------------------------------------------------------
+applicationContext.xml
+=>
+	<!-- 5번 방식 : 자식 엘리먼트들을 속성으로 정의 -->
+	<bean id="boy" class="com.baek.d1.Boy"></bean>
+	<bean id="helloBean" class="com.baek.d1.HelloBeanBoy">
+		<!-- ref태그를 constructor-arg태그의 속성으로 입력 -->
+		<constructor-arg index="1" ref="boy"></constructor-arg>
+		<!-- value태그를 constructor-arg태그의 속성으로 입력 -->
+		<constructor-arg index="0" value="hello"></constructor-arg>
+	</bean>
+App.java
+=>
+	ApplicationContext factory = new ClassPathXmlApplicationContext("applicationContext.xml");
+    HelloBean helloBean1 = factory.getBean("helloBean", HelloBean.class);
+    HelloBean helloBean2 = factory.getBean("helloBean", HelloBean.class);
+    -> 자바 코드 상의 변화는 없다. => 결합도가 낮다.
+------------------------------------------------------------------------------------
+applicationContext.xml
+=>
+	<!-- 6번 방식 : setter Injection -->
+	<bean id="boy" class="com.baek.d1.Boy">
+		<!-- 빈 객체 생성 시 set메소드를 사용하여 변수 값을 입력할 수 있다. -->
+		<!-- 생성자가 없는 Boy클래스는 자동으로 매개변수가 없는 생성자를 생성하여 빈 객체를 만들고, 이후 변수 값을 입력한다. -->
+		<property name="name" value="홍길동"></property>
+	</bean>
+	<bean id="helloBean" class="com.baek.d1.HelloBeanBoy">
+		<constructor-arg index="1" ref="boy"></constructor-arg>
+		<constructor-arg index="0" value="hello"></constructor-arg>
+	</bean>
+App.java
+=>
+	ApplicationContext factory = new ClassPathXmlApplicationContext("applicationContext.xml");
+    HelloBean helloBean1 = factory.getBean("helloBean", HelloBean.class);
+    HelloBean helloBean2 = factory.getBean("helloBean", HelloBean.class);
+    -> 자바 코드 상의 변화는 없다. => 결합도가 낮다.
+-----------------------------------------------------------------------------------
+applicationContext.xml
+=>
+	<!-- 7번 방식 : p 네임스페이스 사용 [xmlns:p="http://www.springframework.org/schema/p"] -->
+	<!-- 빈 객체의 변수 값에 직접 접근하여 속성으로 변수 값 입력 -->
+	<!-- 6번 방식의 압축 -->
+	<bean id="boy" class="com.baek.d1.Boy" p:name="홍길동"></bean>
+	<bean id="helloBean" class="com.baek.d1.HelloBeanBoy">
+		<constructor-arg index="1" ref="boy"></constructor-arg>
+		<constructor-arg index="0" value="hello"></constructor-arg>
+	</bean>
+App.java
+=>
+	ApplicationContext factory = new ClassPathXmlApplicationContext("applicationContext.xml");
+    HelloBean helloBean1 = factory.getBean("helloBean", HelloBean.class);
+    HelloBean helloBean2 = factory.getBean("helloBean", HelloBean.class);
+    -> 자바 코드 상의 변화는 없다. => 결합도가 낮다.
+----------------------------------------------------------------------------------------
+applicationContext.xml
+=>
+	<!-- 8번 방식 : 컬렉션 주입, property : set메소드 필요. -->
+	<bean id="boy" class="com.baek.d1.Boy" p:name="홍길동">
+		<property name="myMap"><!-- 입력할 컬렉션의 이름과 property의 이름이 같아야 한다. -->
+			<map>
+				<entry key="id" value="java"></entry> <!-- key, value 쌍으로 입력 -->
+				<entry key="passwd" value="1111"></entry> <!-- key, value 쌍으로 입력 -->
+				<entry key="driver" value="oracle.jdbc.driver.OracleDriver"></entry>
+															<!-- key, value 쌍으로 입력 -->
+			</map>
+		</property>
+		
+		<property name="myProp"><!-- 입력할 컬렉션의 이름과 property의 이름이 같아야 한다. -->
+			<props>
+				<prop key="name">오정원</prop>
+				<prop key="address">하양</prop>
+			</props>
+		</property>
+	
+		<property name="mySet"><!-- 입력할 컬렉션의 이름과 property의 이름이 같아야 한다. -->
+			<set>
+				<value>aaa</value>
+				<value>bbb</value>
+				<value>ccc</value>
+				<value>ddd</value>
+			</set>
+		</property>
+	
+		<property name="myList"><!-- 입력할 컬렉션의 이름과 property의 이름이 같아야 한다. -->
+			<list>
+				<value>새우</value>
+				<value>오징어</value>
+				<value>낙지</value>
+				<value>참치</value>
+			</list>
+		</property>
+	</bean>	
+	
+	<bean id="helloBean" class="com.baek.d1.HelloBeanBoy" scope="prototype">
+		<constructor-arg index="1" ref="boy"></constructor-arg>
+		<constructor-arg index="0" value="hello"></constructor-arg>
+	</bean>
+App.java
+=>
+	ApplicationContext factory = new ClassPathXmlApplicationContext("applicationContext.xml");
+    HelloBean helloBean1 = factory.getBean("helloBean", HelloBean.class);
+    HelloBean helloBean2 = factory.getBean("helloBean", HelloBean.class);
+    -> 자바 코드 상의 변화는 없다. => 결합도가 낮다.
+---------------------------------------------------------------------------
+applicationContext.xml
+=>
+	<!-- 기본적으로 빈클래스의 생성자를 호출하여 객체를 생성한다. -->
+	<!-- factory 메소드 속성을 사용. 해당메소드를 통해서 빈객체 생성 -->
+	<bean id="boy" class="com.baek.d1.Boy" p:name="홍길동"></bean>
+	<bean id="helloBean" class="com.baek.d1.HelloBeanBoy" factory-method="getInstance"></bean>
+HelloBeanBoy
+=>
+	private static HelloBeanBoy instance;
+	
+	public static HelloBeanBoy getInstance() {
+		System.out.println("getInstance");
+		
+		if(instance == null) {
+			instance = new HelloBeanBoy();
+		}
+		return instance;
+	}
+App.java
+=>
+	ApplicationContext factory = new ClassPathXmlApplicationContext("applicationContext.xml");
+    HelloBean helloBean1 = factory.getBean("helloBean", HelloBean.class);
+    HelloBean helloBean2 = factory.getBean("helloBean", HelloBean.class);
+    -> 자바 코드 상의 변화는 없다. => 결합도가 낮다.
+-----------------------------------------------------------------------------
+applicationContext.xml
+=>
+	<!-- autowire 속성 사용 <beans default-autowire="constructor"> -->
+	<bean id="boy" class="com.baek.d1.Boy" p:name="홍길동"></bean>
+	<bean id="helloBean" class="com.baek.d1.HelloBeanBoy">
+		<!-- default-autowire="constructor"로 모든 빈객체에 대해 constructor를 설정할 수 있다. -->
+		<!-- constructor-arg태그 없이 boy 빈 객체가 입력된다. -->
+	</bean>
+App.java
+=>
+	ApplicationContext factory = new ClassPathXmlApplicationContext("applicationContext.xml");
+    HelloBean helloBean1 = factory.getBean("helloBean", HelloBean.class);
+    HelloBean helloBean2 = factory.getBean("helloBean", HelloBean.class);
+    -> 자바 코드 상의 변화는 없다. => 결합도가 낮다.

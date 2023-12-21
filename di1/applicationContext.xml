@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:p="http://www.springframework.org/schema/p"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-4.3.xsd"
+default-autowire="constructor">
+<!-- 1번 방식 : 빈 생성자를 이용하는 방식 [IoC]
+<bean id="helloBean" class="com.baek.d1.HelloBeanBoy"></bean>
+
+2번 방식 : 생성자를 이용하는 방식, 인자 하나를 주입
+<bean id="helloBean" class="com.baek.d1.HelloBeanBoy">
+	<constructor-arg>
+		construct-arg를 인자로 받음 => 인자를 하나받는 생성자 호출 없으면 에러.
+		<value>이백승</value>
+	</constructor-arg>
+</bean>
+
+3번 방식 : 생성자를 이용하는 방식, 인자 두개 주입, 기본타입과 빈객체 타입
+<bean id="boy" class="com.baek.d1.Boy"></bean>
+<bean id="helloBean" class="com.baek.d1.HelloBeanBoy">
+	construct-arg를 인자로 받음 => 인자를 하나받는 생성자 호출 없으면 에러.
+	<constructor-arg>
+		<value>hello</value>
+	</constructor-arg>
+	<constructor-arg>
+		<ref bean="boy"/>
+	</constructor-arg>
+
+4번 방식 : 인덱스 속성을 사용하면 주입하는 인자의 순서를 변경할 수 있다.
+<bean id="boy" class="com.baek.d1.Boy"></bean>
+<bean id="helloBean" class="com.baek.d1.HelloBeanBoy">
+	인덱스를 주지 않으면 위에서부터 첫번째 인자로 들어간다.
+	<constructor-arg index="1">
+		<ref bean="boy"/>
+	</constructor-arg>
+	<constructor-arg index="0">
+		<value>hello</value>
+	</constructor-arg>
+</bean>
+
+5번 방식 : 자식 엘리먼트들을 속성으로 정의
+<bean id="boy" class="com.baek.d1.Boy"></bean>
+<bean id="helloBean" class="com.baek.d1.HelloBeanBoy">
+	<constructor-arg index="1" ref="boy"></constructor-arg>
+	<constructor-arg index="0" value="hello"></constructor-arg>
+</bean>
+
+6번 방식 : setter Injection
+<bean id="boy" class="com.baek.d1.Boy">
+	<property name="name" value="홍길동"></property>
+</bean>
+<bean id="helloBean" class="com.baek.d1.HelloBeanBoy">
+	<constructor-arg index="1" ref="boy"></constructor-arg>
+	<constructor-arg index="0" value="hello"></constructor-arg>
+</bean>
+
+7번 방식 : p 네임스페이스 사용 [xmlns:p]
+<bean id="boy" class="com.baek.d1.Boy" p:name="홍길동"></bean>
+<bean id="helloBean" class="com.baek.d1.HelloBeanBoy">
+	<constructor-arg index="1" ref="boy"></constructor-arg>
+	<constructor-arg index="0" value="hello"></constructor-arg>
+</bean>
+
+8번 방식 : 컬렉션 주입
+<bean id="boy" class="com.baek.d1.Boy" p:name="홍길동">
+	<property name="myMap">맵이름과 이름이 같아야 한다.
+		<map>
+			<entry key="id" value="java"></entry>key, value 쌍으로 입력
+			<entry key="passwd" value="1111"></entry>key, value 쌍으로 입력
+			<entry key="driver" value="oracle.jdbc.driver.OracleDriver"></entry>key, value 쌍으로 입력
+		</map>
+	</property>
+	<property name="myProp">
+		<props>
+			<prop key="name">오정원</prop>
+			<prop key="address">하양</prop>
+		</props>
+	</property>
+	<property name="mySet">
+		<set>
+			<value>aaa</value>
+			<value>bbb</value>
+			<value>ccc</value>
+			<value>ddd</value>
+		</set>
+	</property>
+	<property name="myList">
+		<list>
+			<value>새우</value>
+			<value>오징어</value>
+			<value>낙지</value>
+			<value>참치</value>
+		</list>
+	</property>
+</bean>	
+<bean id="helloBean" class="com.baek.d1.HelloBeanBoy" scope="prototype">
+	<constructor-arg index="1" ref="boy"></constructor-arg>
+	<constructor-arg index="0" value="hello"></constructor-arg>
+</bean> -->
+
+<!-- 기본적으로 빈클래스의 생성자를 호출하여 객체를 생성한다. -->
+<!-- factory 메소드 속성을 사용. 해당메소드를 통해서 빈객체 생성 -->
+<!-- <bean id="boy" class="com.baek.d1.Boy" p:name="홍길동"></bean>
+<bean id="helloBean" class="com.baek.d1.HelloBeanBoy" factory-method="getInstance"></bean>
+ -->
+<!-- autowire 속성 사용 -->
+<bean id="boy" class="com.baek.d1.Boy" p:name="홍길동"></bean>
+<bean id="helloBean" class="com.baek.d1.HelloBeanBoy" 
+>
+<!-- default-autowire="constructor"로 모든 빈객체에 대해 constructor를 설정할 수 있다. -->
+</bean>
+</beans>
