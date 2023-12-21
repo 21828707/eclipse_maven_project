@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:context="http://www.springframework.org/schema/context"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean id="workerBean" class="di3_1.Worker" scope="prototype"><!-- 보통 싱글톤인데 프로토타입 시 여러 객체 생성 -->
+	</bean>
+	
+	<bean id="executor" class="di3_1.Executor">
+		<property name="worker" ref="workerBean"></property>
+	</bean>
+	
+</beans>

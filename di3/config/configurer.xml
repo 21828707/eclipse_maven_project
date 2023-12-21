@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:context="http://www.springframework.org/schema/context"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd">
+
+<!-- <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<property name="locations">
+		<list>
+			<value>classpath:com/baek/di3/config/jdbc1.properties</value>
+			<value>classpath:com/baek/di3/config/jdbc2.properties</value>
+		</list>
+	</property>
+</bean> -->
+
+<context:property-placeholder
+	location="classpath:com/baek/di3/config/jdbc1.properties, classpath:com/baek/di3/config/jdbc2.properties"/>
+<!-- 주어진 위치에 있는 프로퍼티 파일들을 읽어와서, 해당 값을 빈 설정에 포함시키는 역할.
+	<context:property-placeholder>는 <bean>을 사용하여 PropertyPlaceholderConfigurer 빈을 정의하는 것과 유사하지만, XML 네임스페이스를 사용하여 좀 더 간결하게 표현하는 방식. -->
+
+<bean id="dataSourceFactory" class="com.baek.di3.config.DatasourceFactory">
+	<property name="jdbcDriver" value="${jdbc.driver}"></property>
+	<property name="jdbcUrl" value="${jdbc.url}"></property>
+	<property name="username" value="${jdbc.username}"></property>
+	<property name="password" value="${jdbc.password}"></property>
+</bean>
+
+</beans>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+
+	<bean id="foo0" class="sample2.Foo"></bean>
+	
+	<bean id="foo1" class="sample2.Foo">
+		<constructor-arg value="테스트"></constructor-arg>
+	</bean>
+
+	<bean id="foo2" class="sample2.Foo">
+		<constructor-arg value="Hello"></constructor-arg>
+		<constructor-arg><value>25</value></constructor-arg>
+	</bean>
+
+	<bean id="foo3" class="sample2.Foo">
+		<constructor-arg value="Hello"></constructor-arg>
+		<constructor-arg><value>25</value></constructor-arg>
+		<constructor-arg type="boolean" value="true"></constructor-arg>	
+	</bean>
+	
+	<bean id="foo4" class="sample2.Foo">
+		<constructor-arg>
+			<ref bean="bar"/>
+		</constructor-arg>
+	</bean>
+	<bean id="bar" class="sample2.Bar"></bean>
+</beans>

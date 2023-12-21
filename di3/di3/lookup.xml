@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:context="http://www.springframework.org/schema/context"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd">
+
+<!-- 룩업 메서드는 일반적으로 추상 클래스나 인터페이스에 대한 구현을 런타임에 동적으로 제공하기 위해 사용.
+	룩업 메서드를 정의한 빈은 컨테이너에서 해당 빈의 메서드를 호출할 때마다 실제로는 컨테이너가 해당 메서드를 오버라이드한 동적 프록시 객체를 반환. -->
+	<bean id="processor" class="di3.Processor">
+		<lookup-method name="getCommandFactory" bean="commandFactory"/>
+	</bean>
+	<bean id="commandFactory" class="di3.CommandFactoryImpl"></bean>
+	
+</beans>

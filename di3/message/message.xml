@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:context="http://www.springframework.org/schema/context"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename">
+			<value>message.hello</value>
+		</property>
+	</bean>
+	<!-- basename은 메시지 번들 파일의 기본 이름을 나타냅니다.
+		hello로 시작하는 이름의 프로퍼티 파일들을 찾아서 해당 파일에서 메시지를 로드합니다.
+		he1llo로 이름을 바꾸면 읽지 못한다. -->
+</beans>
