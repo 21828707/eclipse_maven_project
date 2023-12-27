@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:context="http://www.springframework.org/schema/context"
+xmlns:jee="http://www.springframework.org/schema/jee"
+xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd
+http://www.springframework.org/schema/jee
+http://www.springframework.org/schema/jee/spring-jee.xsd">
+	
+	<context:component-scan base-package="controller"></context:component-scan> 
+	<context:component-scan base-package="service"></context:component-scan> 
+	<context:component-scan base-package="dao"></context:component-scan> 
+	
+	<context:property-placeholder location="classpath:config/jdbc1.properties" />
+	
+	
+	<bean name="/board_insert_form.do"
+	class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+		<property name="viewName" value="boardWriterForm"></property>
+	</bean>
+	
+	
+	<!-- Spring-jdbc -->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>
+	
+	<!-- 1. connection pool을 사용하지 않는 방식 -->
+	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driver}"></property>
+		<property name="url" value="${jdbc.url}"></property>
+		<property name="username" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+	</bean> -->
+	
+	<!-- 2. BDCP를 사용한 connection pool 사용 방식 -->
+	<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="${jdbc.driver}"></property>
+		<property name="url" value="${jdbc.url}"></property>
+		<property name="username" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+	</bean> -->
+	
+	<!-- 3. jndi를 사용한 방식 -->
+	<!-- <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="jdbc/jsptest"></property>
+		<property name="resourceRef" value="true"></property>
+		resourceRef : java:/comp/env라는 jndi를 사용할 수 있게 하는 속성
+	</bean> -->
+	
+	<!-- jee를 사용한 방식 [jee추가], jee : jndi-lookup 사용 -->
+	<jee:jndi-lookup jndi-name="/jdbc/jsptest" id="dataSource"
+	resource-ref="true"></jee:jndi-lookup>
+	
+	
+	
+	<!-- controller밑에 클래스들 자동 bean 생성 -->
+	
+	 <bean id = "viewResolver"
+	 class = "org.springframework.web.servlet.view.InternalResourceViewResolver">
+	 	<property name="prefix" value = "/board/"></property>
+	 	<property name="suffix" value = ".jsp"></property>
+	 </bean>
+	 <!-- 
+	 리턴된 논리적인 뷰이름이 hello 였으면
+	 최종 포워딩될 URL : /view/hello.jsp
+	  -->
+</beans>
+
+
+
+
+
+

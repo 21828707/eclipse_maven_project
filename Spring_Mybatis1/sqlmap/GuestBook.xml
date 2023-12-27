@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="guestbook">
+	<parameterMap type="vo.Message" id="messageParamMap">
+		<parameter property="guestName"/>
+	</parameterMap>
+	
+	<resultMap type="vo.Message" id="messageResultMap">
+		<result property="id" column="guestbook_message_id"/>
+		<result property="guestName" column="guestbook_name"/>
+		<result property="content" column="guestbook_content"/>
+	</resultMap>
+	
+	<insert id="insert" parameterType="vo.Message">
+		insert into guestbook_message(guestbook_message_id, guestbook_name, guestbook_content)
+		values(guestbook_seq.nextval, #{guestName}, #{content})
+	</insert>
+	<!-- parameterType="vo.Message"에 존재하는 값을 사용하기 위해 #{}사용 -->
+	
+	<select id="selectCount" resultType="int">
+		select count(*) from guestbook_message
+	</select>
+	<select id="selectList" resultMap="messageResultMap" parameterType="map">
+		<![CDATA[
+			select list2.* from (select rownum r, list1.* from
+			(select * from guestbook_message order by guestbook_message_id desc) list1) list2
+			where r >= #{startRow} and r <= #{endRow}
+		]]>
+		<!-- 특수 문자도 일반 문자로 -->
+	</select>
+</mapper>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace가 mapper인터페이스의 풀패스와 같아야 한다. -->
+<mapper namespace="com.baek.mybatis.MemberMapper">
+	<!-- alias -->
+	<resultMap type="member" id="MemberResultMap">
+		<result property="id" column="ID"/>
+		<result property="name" column="NAME"/>
+		<result property="email" column="EMAIL"/>
+		<result property="phone" column="PHONE"/>
+	</resultMap>
+	
+	<select id="getMembers" resultType="member">
+		select * from member1
+	</select>
+	<select id="getUpdateMember" resultType="member" parameterType="int">
+		select * from member1 where id = #{id}
+	</select>
+	
+	<insert id="insertMember" parameterType="member">
+		insert into member1 values(member_seq.nextval, #{name}, #{email}, #{phone})
+	</insert>
+	
+	<update id="updateMember" parameterType="member">
+		update member1 set name = #{name}, email = #{email}, phone = #{phone}
+		where id = #{id}
+	</update>
+	
+	<delete id="deleteMember" parameterType="int">
+		delete member1 where id = #{id}
+	</delete>
+</mapper>

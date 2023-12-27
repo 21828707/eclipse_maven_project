@@ -1,0 +1,9 @@
+<Context>
+	<Resource name="jdbc/jsptest" auth="Container" type="javax.sql.DataSource"
+		username="java" password="java" driverClassName="oracle.jdbc.driver.OracleDriver"
+		factory="org.apache.tomcat.dbcp.dbcp2.BasicDataSourceFactory"
+		macActive="1000"  maxIdle="500" url="jdbc:oracle:thin:@localhost:1521:xe"/>
+	<!-- tomcat lib에 oracle8.jar를 복사해주어야 한다.
+		서버에서 ConnectionPool이 작동한다. -->
+	<!-- tomcat-> tomcat-dbcp.jar : factory -->
+</Context>
