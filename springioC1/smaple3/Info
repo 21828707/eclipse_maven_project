@@ -1,0 +1,17 @@
+2022년 9월 이클립스 버전에서는 java Project 생성 후
+메이븐 프로젝트 변환하면 작동하였으나,
+
+2023년 9월 버전에서는 계속 클래스 path가 인식이 안된다.
+
+해결 방법)
+module-info.java를 수정한다.
+module springioC1 {
+		[프로젝트 이름?]
+	requires java.se;
+	requires spring.beans;
+	//requires spring.aop;
+	requires spring.context;
+	requires spring.core;
+	//requires spring.expression;
+	exports sample3 to spring.beans;
+}
